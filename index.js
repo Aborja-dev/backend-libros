@@ -19,18 +19,22 @@ app.get('/api/notes', (request, response) => {
 app.post('/api/notes', (request, response) => {
    console.log(request.body)
    const {title, content} = request.body
-   const newNote = {
+   const newNote = new Note({
       title,
       content,
-      important: false
-   }
-   const notesArray = notes.concat(newNote)
-  response.status(200).json(notesArray)
+      important: false,
+      date: new Date(Date.now())
+   })
+  newNote.save().then(savedNote=>{
+     response.status(200).json(savedNote)
+  })
 })
 app.use((req,res)=>{
    return res.status(404).end()
 })
 const PORT = 3002
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Servidor corriendo en puerto ${PORT}`)
 })
+
+module.exports = {app, server}
