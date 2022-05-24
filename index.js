@@ -1,31 +1,20 @@
+require('dotenv').config()
+require('./mongo')
+
 const express = require('express')
 const cors = require('cors')
 
-
+const Note = require('./models/Note')
 const app = express()
 app.use(cors())
 app.use(express.json())
 
-const notes = [
-   {
-      title: 'estudiar react',
-      content: 'estudiar react para la prueba',
-      important: true
-   },
-   {
-      title: 'apuntes',
-      content: 'repasar los apuntes de la escuela',
-      important: false
-   },
-   {
-      title: 'dormirse',
-      content: 'dormirse temprano antes de las doce',
-      important: true
-   },
-]
 
 app.get('/api/notes', (request, response) => {
-   response.status(200).json(notes)
+   Note.find({})
+      .then((notes)=>{
+         return response.status(200).json(notes)
+      })
 })
 app.post('/api/notes', (request, response) => {
    console.log(request.body)
