@@ -6,5 +6,11 @@ const saveNotes = async (notes) => {
       await note.save()
    });
 }
+const saveAll = async (array, Schema) => {
+   array.forEach(async (_el) => {
+      const newEl = new Schema(_el)
+      await newEl.save()
+   });
+}
 
-module.exports = saveNotes
+module.exports = { saveNotes, saveAll }
